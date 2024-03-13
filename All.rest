@@ -1,0 +1,15 @@
+
+
+POST http://localhost:3002/api/users
+Content-Type: application/json
+
+{
+    "name": "Jeancy",
+    "lastName": "Dalos 5",
+    "mail": "dalos@gmail.com",
+    "password": "Jeancy",
+    "university": "Unversite Jeancy",
+    "faculty": "Tech",
+     "country": "Canada",
+    "phone": "+144545454545",
+}
