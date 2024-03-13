@@ -1,0 +1,81 @@
+
+
+
+
+.friends {
+    // background: green;
+    width: 15em;
+
+    @media (max-width: 500px) {
+        display: none;
+    }
+    
+    &__container {
+        display: flex;
+        flex-direction: column;
+        // border: 1px solid red;
+        height: 20em;
+        overflow-y: scroll;
+
+        &::-webkit-scrollbar {
+            width: .2em;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: lighten($color , 15)
+        }
+    }
+
+    &__title {
+        margin-bottom: 1.1em;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 1.3em;
+        font-weight: 400;
+        max-width: 50%;
+        color: $color;
+
+        @media (max-width: 768px) {
+           max-width: 60%;
+        }
+    }
+
+    &__card {
+        margin-bottom: 1em;
+        margin-right: .5em;
+        padding: .3em;
+        display: flex;
+        border: 1px solid #e1e1e1;
+        border-radius: .5em;
+
+    }
+
+    &__prof {
+        font-size: .6em;
+        color: #6a6a6a;
+    }
+
+    &__image {
+        position: relative;
+        margin-right: .5em;
+        width: 2em;
+        height: 2em;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+
+    &__img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        object-fit: cover;
+        object-position: center center;
+        width: 100%;
+        height: 100%;
+    }
+
+    &__name {
+        font-size: .8em;
+    }
+}

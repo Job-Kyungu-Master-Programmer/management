@@ -1,0 +1,87 @@
+
+
+.sign {
+    padding-top: 8em;
+    height: 41em;
+
+    @media (max-width: 768px) {
+        padding-top: 12em;
+        height: 100vh;
+    }
+
+    @media (max-width: 768px) {
+        font-size: calc(0 * 0vw + 1.9em);
+    }
+
+    &__container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        @media (max-width: 768px) {
+            height: 100%;
+        }
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+
+        @media (max-width: 768px) {
+            width: 100%;
+        }
+    }
+
+    &__inputs {
+        display: flex;
+        flex-direction: column;
+
+        @media (max-width: 768px) {
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+    }
+
+    &__quest {
+        display: flex;
+        align-items: center!important;
+        justify-content: center!important;
+    }
+
+    &__input  {
+        margin-bottom: 1.8em;
+        padding: 1.25em 1em;
+        border-radius: .4em;
+        outline: 0;
+        border: 0;
+        border: 1px solid #ccc;
+        transition: border-color .5s ease-in-out;
+
+        &:focus {
+            border-color: lighten($color, 30);
+        }
+
+        @media (max-width: 1024px) {
+            padding: .9em .7em;
+        }
+
+        @media (max-width: 768px) {
+            padding: 1.3em 1.3em;
+            width: 100%;
+        }
+    }
+
+    &__title {
+        margin-bottom: 1em;
+        font-size: 1.9em;
+    }
+
+}
+.sign__btn {
+    @media (max-width: 1024px) {
+        padding: 1em 1em!important;
+        background: red!important
+    }
+}

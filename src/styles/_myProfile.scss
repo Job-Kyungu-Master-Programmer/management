@@ -1,0 +1,178 @@
+
+
+
+.myprofile {
+    padding-top: 8em;
+
+    @media (max-width: 768px) {
+        padding-top: 18em;
+    }
+
+    @media (max-width: 500px) {
+        padding-top: 17em;
+        font-size: calc(0 * 0vw + 1.6em);
+    }
+
+
+    @media (max-width: 400px) {
+        font-size: calc(0 * 0vw + 1.9em);
+    }
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__title {
+        margin-bottom: .2em;
+        font-weight: 400;
+        font-size: 1.9em;
+    }
+
+    &__subtitle {
+        font-weight: 300;
+        color: rgb(156, 156, 156);
+    }
+
+    &__heading {
+        margin-bottom: .7em;
+        padding-top: 3em;
+        display: flex;
+        align-items: center;
+    }
+
+    &__image {
+        position: relative;
+        margin-right: 1em;
+        overflow: hidden;
+        width: 8em;
+        height: 8em;
+        border-radius: 50%;
+        border: 1px solid #909090;
+    }
+
+    &__img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+
+    &__text {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    &__btn {
+        margin-bottom: 1.6em;
+        padding:  1em 1em;
+        border-radius: .5em;
+        color: white;
+        font-weight: 700;
+        background: $color;
+        outline: 0;
+        border: 0;
+        cursor: pointer;
+        transition: opacity .5s ease-in-out;
+        
+        &:last-child {
+            margin-bottom: 0;
+            padding: .75em 1em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: black;
+            border: 1px solid #ccc;
+            background: transparent;
+        }
+
+        &:hover {
+            opacity: .65;
+        }
+    }
+
+    &__delete {
+        font-size: 1.6em!important;
+        color: red;
+    }
+
+    &__bar {
+        margin-bottom: 3em;
+        font-size: .8em;
+        color: #909090;
+    }
+
+    &__infos {
+        display: flex;
+        flex-wrap: wrap;
+        padding-bottom: 4em;
+
+        @media (max-width: 500px) {
+            flex-direction: column;
+            width: 100%;
+        }
+
+    }
+
+    &__card {
+        margin-bottom: 1em;
+        margin-right: 1em;
+        width: 30%;
+
+        &__btn {
+            padding-top: 1.3em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 500px) {
+            width: 100%;
+        }
+    }
+
+    
+    &__label {
+        margin-bottom: .45em;
+        display: block;
+        font-size: .8em;
+        font-weight: 400;
+        color: #505050;
+    }
+    
+    &__input {
+        padding: 1.2em 1em;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: .3em;
+        outline: 0;
+        font-weight: 800;
+        transition: border-color .3s linear;
+        
+        &:focus {
+            border-color: $color;
+        }
+
+        @media (max-width: 500px) {
+            width: 100%;
+        }
+    }
+   
+    &__submit {
+        padding:  1.2em 1em;
+        border-radius: .5em;
+        color: white;
+        font-weight: 900;
+        background: $color;
+        outline: 0;
+        border: 0;
+        cursor: pointer;
+        width: 100%;
+        transition: opacity .5s ease-in-out;
+
+        &:hover {
+            opacity: .75;
+        }
+
+    }
+}
