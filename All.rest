@@ -13,3 +13,20 @@ Content-Type: application/json
      "country": "Canada",
     "phone": "+144545454545",
 }
+
+
+###
+POST http://localhost:3002/api/pubs
+Content-Type: application/json
+
+{
+    "title": "Matt",
+    "content": "Dalos5",
+    "hours": "12",
+    "minutes": "00",
+    "id": "1"
+
+}
+
+###
+GET http://localhost:3002/api/pubs
