@@ -28,19 +28,34 @@ const App = () => {
   const [country, setCountry] = useState('country');
   const [phone, setPhone] = useState('phone');
   const [avatar, setAvatar] = useState(null);
+  //On commence la partie de la publication
+  const [pubs, setPubs] = useState([])
+  const [title, setTitle] = useState('title sur title')
+  const [content, setContent] = useState('content cont')
+  const [like, setLike] = useState(0)
+  const [img, setImg] = useState(null)
+  // ==============================================================
 
-
+  // Boucle pour afficher les utilisateurs
   useEffect(() => {
     Base.getUsers().then(result => {
       setUsers(result)
     })
   }, [])
 
+  // Boucle por afficher les Publications 
+  useEffect(() => {
+    Base.getAll().then(result => {
+       setPubs(result)
+    })
+  }, [])
+
+
   const onChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'avatar') {
       setAvatar(files[0]);
-    } else {
+     }  else {
       // Utiliser les setters spécifiques pour chaque champ
       switch (name) {
         case 'name':
@@ -94,6 +109,35 @@ const App = () => {
     }
   };
 
+  // addPub est notre funct* pour ajouter des publicat* a la DB avec les images
+  const addPub = async (e) => {
+    e.preventDefault();
+    const dates = new Date();
+    const hours = dates.getHours();
+    const minutes = dates.getMinutes();
+    const day = dates.getDate();
+    const month = dates.getMonth() + 1; // Les mois sont indexés à partir de 0
+    const year = dates.getFullYear();
+    const formPub = new FormData();
+    formPub.append('title', title);
+    formPub.append('content', content);
+    formPub.append('img', img);
+    formPub.append('hours', hours)
+    formPub.append('minutes', minutes)
+    formPub.append('day', day)
+    formPub.append('month', month)
+    formPub.append('year', year)
+   
+    Base.createPub(formPub)
+       .then(response => {
+         setPubs(pubs.concat(response));
+       })
+       .catch(error => {
+         console.error('Erreur lors de l\'envoi de la publication:', error);
+       });
+   };
+   
+
 
   // Logic for Pub
   return (
@@ -102,7 +146,9 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />
-        <Route path='/news' element={<News />} />
+        <Route path='/news' element={<News pubs={pubs} setPubs={setPubs} addPub={addPub} title={title}
+          content={content} like={like} setLike={setLike} img={img} setContent={setContent}
+          setTitle={setTitle} setImg={setImg} />} />
         <Route path='/friends' element={<Friends users={users} />} />
         <Route path='/contacts' element={<Contact />} />
         <Route path='/new' element={<New />} />

@@ -2,7 +2,7 @@ import axios from 'axios'
 
 
 const userUrl = '/api/users'
-// const pubUrl  = 'http://localhost:3001/pubs'
+const pubUrl  = '/api/pubs'
 
 
 const getUsers = () => {
@@ -21,7 +21,40 @@ const updateUser = ( object, id ) => {
 }
 
 
+// Pour les pubs , publier par les utilisateurs
+const getAll = () => {
+    const request = axios.get(pubUrl)
+    return request.then(response => response.data)   
+}
+
+const createPub = objects => {
+    const request = axios.post(pubUrl, objects)
+    return request.then(response => response.data)
+}
+
+const updatePub = ( object, id ) => {
+    const request = axios.put(`${pubUrl}/${id}`,object)
+    return request.then(response => response.data)
+}
+
+const delet = ( id,newObject) => {
+    const request = axios.delete(`${pubUrl}/${id}`,newObject)
+    return request.then(response => response.data)
+}
+
+const likes = ( object, id ) => {
+    const request = axios.put(`${pubUrl}/${id}`, object)
+    return request.then(response => response.data)
+}
+
+
 export default {
-    getUsers, createUser,
-    updateUser
+    getUsers,
+    createUser,
+    updateUser,
+    getAll,
+    createPub,
+    updatePub,
+    delet,
+    likes
 }

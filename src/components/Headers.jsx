@@ -48,13 +48,13 @@ const Headers = () => {
                             About 
                         </Link>
                     </li>
-                    {/* <li 
+                    <li 
                       onClick={() => setIsOpen(false)}
                       className="header__item">
                         <Link to='/news' className="header__link">
                             Nouvelles 
                         </Link>
-                    </li> */}
+                    </li>
                     <li 
                       onClick={() => setIsOpen(false)}
                       className="header__item">
