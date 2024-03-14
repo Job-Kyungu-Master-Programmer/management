@@ -1,0 +1,32 @@
+
+
+POST http://localhost:3002/api/users
+Content-Type: application/json
+
+{
+    "name": "Jeancy",
+    "lastName": "Dalos 5",
+    "mail": "dalos@gmail.com",
+    "password": "Jeancy",
+    "university": "Unversite Jeancy",
+    "faculty": "Tech",
+     "country": "Canada",
+    "phone": "+144545454545",
+}
+
+
+###
+POST http://localhost:3002/api/pubs
+Content-Type: application/json
+
+{
+    "title": "Matt",
+    "content": "Dalos5",
+    "hours": "12",
+    "minutes": "00",
+    "id": "1"
+
+}
+
+###
+GET http://localhost:3002/api/pubs
