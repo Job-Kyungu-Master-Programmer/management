@@ -21,7 +21,8 @@ app.use(cors());
 app.use(express.json())
 app.use(express.static('build'));
 // Serve static files from the uploads directory
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Pour afficher les photos
+app.use('/uploads', express.static('uploads'))
+   
 app.use(middleware.requestLogger);
 app.use('/api/users', userRouter);
 app.use('/api/pubs', pubRouter)

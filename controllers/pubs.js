@@ -1,6 +1,7 @@
 const pubRouter = require('express').Router()
 const Pub =  require('../models/Pub')
 const uploadFile = require('../utils/multerConfig')
+const cloudinary = require('../utils/cloud')
 
 
 
@@ -15,24 +16,37 @@ pubRouter.delete('/:id', async (request, response) => {
 })
 
 
-// Ici, vous utilisez uploadFile.single('img') pour gérer l'upload du fichier
+
+
 pubRouter.post('/', uploadFile.single('img'), async (request, response) => {
-        const body = request.body;
-        const fileImg = request.file ? request.file.path : null
+    const body = request.body
+    let fileImg = null 
 
-        const pub = new Pub({
-            title: body.title,
-            content: body.content,
-            img: fileImg,
-            hours: body.hours, // Ajoutez la date formatée
-            minutes: body.minutes // Ajoutez l'heure formatée
-        });
+    if(request.file) {
+        try {
+            const result = await cloudinary.uploader.upload(request.file.path);
+            fileImg = result.secure_url // URL de l'image Cloudinary
+        } catch (error) {
+            console.error('Erreur lors de l\'upload sur Cloudinary :', error)
+            return response.status(500).json({ error: 'Erreur lors de l\'upload sur Cloudinary' });
+        }
+    }
 
-        const savedPub = await pub.save();
-        response.json(savedPub);
-});
+    const pub = new Pub({
+        title: body.title,
+        content: body.content,
+        img: fileImg,
+        hours: body.hours,
+        minutes: body.minutes
+    })
 
+    const savedPub = await pub.save()
+    response.json(savedPub)
+})
 
+// cloudinary.api.resources(function(error, result) {
+//     console.log(result, error);
+// });
 
 
 
