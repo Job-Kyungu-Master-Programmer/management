@@ -12,11 +12,15 @@ import User from './pages/User'
 import Sign from './auth/Sign'
 import Signup from './auth/Signup'
 import Footer from './components/Footer'
+import Success from './components/Sucess'
 import Base from './Api/Base' // Assurez-vous que le chemin d'importation est correct
 
 const App = () => {
   // Logic for User 
   //  const [user, setUser] = useState(null);
+
+  //State for Response
+  const [sucess, setSucess] = useState(null)
 
   const [users, setUsers] = useState([])
   const [name, setName] = useState('');
@@ -131,6 +135,11 @@ const App = () => {
     Base.createPub(formPub)
        .then(response => {
          setPubs(pubs.concat(response));
+       }).finally(suc => {
+            setSucess('Commentaire bien ajouter!')
+          setTimeout(() => {
+            setSucess(null)
+          },2500)
        })
        .catch(error => {
          console.error('Erreur lors de l\'envoi de la publication:', error);
@@ -143,6 +152,8 @@ const App = () => {
   return (
     <div className="app">
       <Headers />
+      {/* sucesss pour remettre des reponse */}
+      <Success success={sucess} />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />

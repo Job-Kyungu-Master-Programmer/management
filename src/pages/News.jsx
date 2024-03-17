@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Alert from '@mui/material/Alert';
 import Profile from '../components/Profile'
 import Friends from '../components/Friends'
 import Search from '../components/Search'
@@ -12,7 +13,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
 import { Button } from '@mui/material';
 import Base from '../Api/Base' // Le chemin d'importation est correct
-
+import Success from '../components/Sucess';
 
 
 
@@ -38,6 +39,9 @@ const News = ({ pubs, setPubs, title, setTitle, setContent, content, like, addPu
    const [closePop, setClosePop] = useState(false);
    const [search, setSearch] = useState('')
    const [preview, setPreview] = useState(null);
+
+   //State for response
+   const [warDel, setWarDel] = useState(null)
 
 
 
@@ -86,6 +90,11 @@ const News = ({ pubs, setPubs, title, setTitle, setContent, content, like, addPu
       Base.delet(id, pubId).then(result => {
          setPubs(pubs.map(p => p.id !== id ? p : result))
          setPubs(pubs.filter(p => p.id !== id))
+      }).finally(su => {
+          setWarDel('Vous venez de supprimer votre publication')
+          setTimeout(() => {
+             setWarDel(null)
+          },2000)
       })
    }
 
@@ -95,6 +104,13 @@ const News = ({ pubs, setPubs, title, setTitle, setContent, content, like, addPu
 
    return (
       <div className="news">
+          {(warDel && 
+              <div className="popResp">
+               <Alert className="popResp__container" severity="warning" color="warning">
+                     { warDel } 
+               </Alert>
+             </div> 
+           )}
          <div className="container news__container">
             <Profile />
             <div className={closePop ? 'pop__close' : 'pop'}>
@@ -121,7 +137,7 @@ const News = ({ pubs, setPubs, title, setTitle, setContent, content, like, addPu
                   </div>
                   {preview && <img src={preview} alt="Preview" style={{ objectFit: 'contain',objectPosition:'center center', width: '120px', height: '120px' }} />}
                   <textarea type="text" value={content} name='content' onChange={(e) => onChange(e)} placeholder='Quelque chose a publier...' className="pop__textarea"></textarea>
-                  <button type='submit' className="pop__btn">Publier</button>
+                  <button type='submit' onClick={() => setClosePop(false)} className="pop__btn">Publier</button>
                </form>
             </div>
             <div className="news__center">
