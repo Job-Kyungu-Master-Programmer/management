@@ -1,3 +1,4 @@
+![Screenshot 2024-03-17 at 1 31 54 PM](https://github.com/Job-Kyungu-Master-Programmer/management/assets/103278257/35608997-98a3-47ab-9f89-e9da5aca2094)
 Add Cloud Cloudinary
 
 Dans cette branche, j'ai viens d'ajouter un Cloud appeler 'Cloudinary' , parce que quand j'ai deployer l'app sur Render, j'ai connut un probleme : 
