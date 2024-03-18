@@ -6,6 +6,7 @@
     min-height: 100vh;
 
     @media (max-width: 768px) {
+        padding: 0 .7em;
         padding-top: 13em;
         font-size: calc(0 * 0vw + 1.7em);
     }

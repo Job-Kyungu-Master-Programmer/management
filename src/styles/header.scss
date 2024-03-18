@@ -26,6 +26,7 @@
     @media (max-width: 768px) {
         display: flex;
         align-items: center;
+        padding-right: .2em;
         height: 9em;
         z-index: 100;
         background: rgb(226, 226, 226);
@@ -396,6 +397,14 @@
         padding-top: .3em;
         font-size: 2em;
         text-decoration: none;
+
+        @media (max-width: 768px) {
+            margin-left: .17em;
+            // &__img {
+            //     width: 1em;
+            //     height: 1em;
+            // }
+        }
     }
 
 }

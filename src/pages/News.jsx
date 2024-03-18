@@ -13,7 +13,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
 import { Button } from '@mui/material';
 import Base from '../Api/Base' // Le chemin d'importation est correct
-import Success from '../components/Sucess';
+
 
 
 

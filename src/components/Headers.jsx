@@ -72,20 +72,20 @@ const Headers = () => {
                             Contactez-nous 
                         </Link>
                     </li>
-                    {/* <li 
+                    <li 
                       onClick={() => setIsOpen(false)}
                       className="header__item">
                         <Link to='/new' className="header__link">
                             New
                         </Link>
-                    </li> */}
-                    {/* <li 
+                    </li>
+                    <li 
                       onClick={() => setIsOpen(false)}
                       className="header__item">
                         <Link to='/myprofile' className="header__link">
                             My Profile
                         </Link>
-                    </li> */}
+                    </li>
                     <li 
                       onClick={() => setIsOpen(false)}
                       className="header__item">

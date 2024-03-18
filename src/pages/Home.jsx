@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import videos from '../assets/v-home.mp4';
+import us from '../assets/contact.jpeg'
 import Banner from '../components/Banner';
 
 const Home = () => {
@@ -14,11 +15,11 @@ const Home = () => {
               C'est ici que les étudiants trouvent un espace central pour partager des connaissances
               </p>
               <Link to='/sign-in' className='home__link'>Connectez-vous</Link>
-              {/* <div className="home__video"> */}
-                <video src={videos} muted preload='auto' autoPlay loop  className="home__vid">
-                  <source src={videos} type="video/mp4" />
+              <div className="home__video">
+              <video className='home__vid' autoplay loop muted playsinline preload="yes">
+                  <source src={videos} type="video/mp4"/>
                 </video>
-              {/* </div> */}
+              </div>
           </div>
          <Banner />
       </div>
