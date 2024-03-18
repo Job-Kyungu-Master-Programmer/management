@@ -14,11 +14,11 @@ const Home = () => {
               C'est ici que les étudiants trouvent un espace central pour partager des connaissances
               </p>
               <Link to='/sign-in' className='home__link'>Connectez-vous</Link>
-              <div className="home__video">
+              {/* <div className="home__video"> */}
                 <video src={videos} muted preload='auto' autoPlay loop  className="home__vid">
                   <source src={videos} type="video/mp4" />
                 </video>
-              </div>
+              {/* </div> */}
           </div>
          <Banner />
       </div>

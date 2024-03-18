@@ -6,13 +6,13 @@
     min-height: auto;
 
     @media (max-width: 768px) {
-        padding-top: 18em;
-    }
-
-    @media (max-width: 500px) {
-        padding-top: 13em;
+        padding-top: 10em;
         font-size: calc(0 * 0vw + 2.1em);
     }
+
+    // @media (max-width: 500px) {
+    //     padding-top: 13em;
+    // }
 
     @media (max-width: 375px) {
         padding-top: 15em;

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import us from '../assets/user.jpeg'
+import etudnet from '../assets/ico.png'
 
 import HttpsIcon from '@mui/icons-material/Https';
 import { CgMenuLeftAlt } from "react-icons/cg";
@@ -31,7 +32,9 @@ const Headers = () => {
   return (
      <div className={isScrolled ? 'sticky' : 'header'}>
           <div className="container header__container">
-          <Link className={isScrolled ? 'sticky__logo' : 'header__logo'}>F <span className="header__logo__sp">.</span> </Link>
+          <Link to='/' className={isScrolled ? 'sticky__logo' : 'header__logo'}>
+              <img src={etudnet} alt="" className="header__logo__img" />
+             </Link>
               <nav className="header__nav">
                 <ul className={isOpen ? 'openList' : 'header__list'}>
                     <li

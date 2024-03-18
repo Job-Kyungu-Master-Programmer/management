@@ -75,7 +75,9 @@ code {
     height: 100%;
 
     @media (max-width: 768px) {
-        max-width: 75rem;
+        margin: 0 0;
+        padding: 0 .2em;
+        max-width: 100%;
         font-size: calc(0 * 0vw + 2em);
     }
 }

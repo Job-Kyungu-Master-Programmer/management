@@ -6,6 +6,7 @@
     z-index: 90;
 
 
+
     .sticky__bars__open {
         color: #212121d1;
     }
@@ -56,10 +57,29 @@
     }
 
     &__logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-size: 2em;
-        font-weight: 900;
+        height: 100%;
+        padding-top: .1em;
         text-decoration: none;
-        color: black;
+
+        &__img {
+            object-position: center center;
+            width: 2em;
+            height: 1em;
+            object-fit: contain;
+        }
+
+
+        @media (max-width: 768px) {
+            margin-left: .15em;
+            &__img {
+                width: 1em;
+                height: 1em;
+            }
+        }
     }
     
     button {
@@ -373,10 +393,9 @@
     }
 
     &__logo {
+        padding-top: .3em;
         font-size: 2em;
-        font-weight: 900;
         text-decoration: none;
-        color: $color;
     }
 
 }
