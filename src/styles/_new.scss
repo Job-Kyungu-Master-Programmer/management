@@ -1,0 +1,113 @@
+
+
+
+
+.new {
+    padding-top: 8em;
+    padding-bottom: 2em;
+    width: 100%;
+
+    @media (max-width: 768px) {
+        padding: 0 1.3em;
+        padding-top: 22em;
+    }
+
+    @media (max-width: 425px) {
+        font-size: calc(0 * 0vw + 1.5em);
+    }
+    
+    &__container {
+        display: flex;
+        align-items: center;
+        justify-content: center ;
+        flex-direction: column;
+        // border: 1px solid red;
+    }
+
+    &__image{
+        margin-bottom: 1.3em;
+        border-radius: .5em;
+        overflow: hidden;
+        width: 80%;
+        height: 25em;
+        background: white;
+
+        @media (max-width: 768px) {
+            width: 100%;
+        }
+    }
+
+    &__img {
+        object-fit: cover;
+        object-position: top center;
+        width: 100%;
+        height: 100%;
+    }
+
+    &__text {
+        margin-bottom: 1.3em;
+        width: 80%;
+
+        @media (max-width: 768px) {
+            width: 100%;
+        }
+    }
+
+    &__title {
+        margin-bottom: .5em;
+        font-size: 1.8em;
+        font-weight: 500;
+
+        @media (max-width: 425px) {
+            font-size: 1.2em;
+        }
+        
+        &__bottom {
+            display: flex;
+            justify-content: space-between;
+        }
+
+    }
+
+    &__name {
+        margin-top: 1.5em;
+        font-weight: 400;
+        font-size: .9em;
+
+        > span {
+            color: #8d8d8d;
+        }
+    }
+
+    &__date {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+
+        > span {
+            margin-bottom: .3em;
+            font-size: .7em;
+            color: #ccc;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    &__sl-large {
+        padding: 1em 0;
+        width: 80%;
+
+        @media (max-width: 768px) {
+            width: 100%;
+        }
+    }
+
+    &__content {
+        margin-bottom: 1em;
+        font-size: .8em;
+        line-height: 130%;
+    }
+
+}
