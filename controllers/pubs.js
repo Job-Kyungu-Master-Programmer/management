@@ -10,8 +10,20 @@ pubRouter.get('/', async (request, response) => {
     response.json(pub)
 })
 
+pubRouter.get('/:id', async (request, response) => {
+    const pub = await Pub.findById(request.params.id)
+    response.json(pub)
+})
+
+
+// Dans cette route si on supprime la pub , celle-ci va directement supprimer l'img dans Cloudinary
 pubRouter.delete('/:id', async (request, response) => {
     const pub = await Pub.findByIdAndDelete(request.params.id)
+    // Si l'élément a une image, supprimons-la de Cloudinary
+    if (pub.img) {
+        const publicId = pub.img.split('/').pop().split('.')[0]; // Extraire l'ID public de l'URL
+        await cloudinary.uploader.destroy(publicId); // Supprimer l'image de Cloudinary
+    }
     response.json(pub)
 })
 
