@@ -19,6 +19,10 @@ const pubSchema = new mongoose.Schema({
     },
     minutes: {
         type: String
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 })
 

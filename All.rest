@@ -18,15 +18,35 @@ Content-Type: application/json
 ###
 POST http://localhost:3002/api/pubs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtYWlsIjoiZW1pbmFAZ21haWwuY29tIiwiaWQiOiI2NWZhMjMxZDhjNmZkYmE4Njc2OGRiM2YiLCJpYXQiOjE3MTA5NTI5OTJ9.aRGuncfqbSVBJVBfkZBqe2zshz7lyunrb814FxbeB8s
 
 {
-    "title": "Matt",
+    "title": "L'Amerique et Afrique",
     "content": "Dalos5",
     "hours": "12",
     "minutes": "00",
-    "id": "1"
+    "avatar": "https://res.cloudinary.com/etudnet-project/image/upload/v1710871605/yx1fdgikytgul6ru8ncq.avif",
+    "userId": "65fa231d8c6fdba86768db3f"
 
 }
 
 ###
 GET http://localhost:3002/api/pubs
+###
+GET  http://localhost:3002/api/users
+###
+
+# em
+# emina@gmail.com
+# "mail": "mat@gmail.com","password": "ts"
+POST http://localhost:3002/api/login
+Content-Type: application/json
+
+{
+    "mail": "emina@gmail.com",
+    "password": "em"
+
+}
+
+###
+GET http://localhost:3002/api/login

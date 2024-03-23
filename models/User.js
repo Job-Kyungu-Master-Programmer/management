@@ -33,7 +33,13 @@ const userSchema = new mongoose.Schema({
     },
     avatar: {
         type: String,
-    }
+    },
+    pubs: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Pub'
+        }
+    ]
 })
 
 userSchema.plugin(validation)
