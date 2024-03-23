@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Profile from '../components/Profile'
@@ -13,6 +13,10 @@ import pr from '../assets/user.jpeg'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
 import { Button } from '@mui/material';
+import AspectRatio from '@mui/joy/AspectRatio';
+import Redirect from '../components/Redirect'
+import RefreshLoad from '../components/RefreshLoad'
+
 import Base from '../Api/Base' // Le chemin d'importation est correct
 
 
@@ -28,7 +32,7 @@ const VisuallyHiddenInput = styled('input')({
    left: 0,
    whiteSpace: 'nowrap',
    width: 1,
-  });
+});
 
 
 
@@ -36,14 +40,13 @@ const VisuallyHiddenInput = styled('input')({
 
 
 
-const News = ({ pubs, setPubs, title, setTitle, setContent, content, like, addPub, setImg}) => {
+const News = ({ pubs, setPubs, title, setTitle, setContent, content, user, users, like, addPub, setImg }) => {
    const [closePop, setClosePop] = useState(false);
    const [search, setSearch] = useState('')
    const [preview, setPreview] = useState(null);
 
    //State for response
    const [warDel, setWarDel] = useState(null)
-
 
 
 
@@ -93,10 +96,10 @@ const News = ({ pubs, setPubs, title, setTitle, setContent, content, like, addPu
          setPubs(pubs.map(p => p.id !== id ? p : result))
          setPubs(pubs.filter(p => p.id !== id))
       }).finally(su => {
-          setWarDel('Vous venez de supprimer votre publication')
-          setTimeout(() => {
-             setWarDel(null)
-          },2000)
+         setWarDel('Vous venez de supprimer votre publication')
+         setTimeout(() => {
+            setWarDel(null)
+         }, 2000)
       })
    }
 
@@ -104,25 +107,44 @@ const News = ({ pubs, setPubs, title, setTitle, setContent, content, like, addPu
    //Pour inverser les publications, que le dernier envoyer soit au dessus des ceux qui l'on preceder
    const reversedPub = pubs.slice().reverse();
 
+
+   // Quand l'user se deconnecte on lui deconnecte aussi puis on lui affiche un Panneau de Redirection
+   const [isLoading, setIsLoading] = useState(true);
+   // ICi on va simulez le chargement pourqu'il n'yait point de retour a de la page Redirect, quand deja 
+   // l'user est connecter, apres le rechargement
+   useEffect(() => {
+      setTimeout(() => {
+         setIsLoading(false);
+      }, 2100); // Ajustez le délai selon vos besoins
+   }, []);
+
+   if (isLoading) {
+      return <div className='refresh'> <RefreshLoad /> </div>; // Et ce RefreshLoad je lui ai mis dans un composant
+      // Element Material UI
+   }
+   // Redirection au Component <Redirect />
+   if (user == null) {
+      return  <Redirect />
+   }
+
    return (
       <div className="news">
-          {(warDel && 
-              <div className="popResp">
+         {(warDel &&
+            <div className="popResp">
                <Alert className="popResp__container" severity="warning" color="warning">
-                     { warDel } 
+                  {warDel}
                </Alert>
-             </div> 
-           )}
+            </div>
+         )}
          <div className="container news__container">
-            <Profile />
+            <Profile user={user} />
             <div className={closePop ? 'pop__close' : 'pop'}>
                <div className="pop__container" onClick={() => setClosePop(!closePop)}>
                </div>
                <form onSubmit={addPub} encType='multipart/form-data' className="pop__form">
                   <ClearIcon onClick={() => setClosePop(!closePop)} className='pop__icon' />
                   <h1 className="pop__title">Dite quelque chose !</h1>
-                  <input type="text" value={title} name='title' onChange={(e) => onChange(e)} placeholder='Quel sujet ?' className="pop__input pop__input__title" />
-                  {/* <input type="file" name='img' onChange={handleImageChange} className="pop__input" /> */}
+                  <input type="text" value={title} name='title' onChange={(e) => onChange(e)} placeholder='Quel sujet ?' className="pop__input pop__input__title" required />
                   <Button
                      className="signup__file"
                      component="label"
@@ -130,15 +152,15 @@ const News = ({ pubs, setPubs, title, setTitle, setContent, content, like, addPu
                      variant="outlined"
                      tabIndex={-1}
                      startIcon={<CloudUploadIcon />}
-                     >
+                  >
                      Ajouter une image
-                     <VisuallyHiddenInput type="file" name='img' onChange={handleImageChange} />
+                     <VisuallyHiddenInput type="file" name='img' onChange={handleImageChange} required />
                   </Button>
                   <div className="pop__tool">
                      <AddPhotoAlternateIcon />
                   </div>
-                  {preview && <img src={preview} alt="Preview" style={{ objectFit: 'contain',objectPosition:'center center', width: '120px', height: '120px' }} />}
-                  <textarea type="text" value={content} name='content' onChange={(e) => onChange(e)} placeholder='Quelque chose a publier...' className="pop__textarea"></textarea>
+                  {preview && <img src={preview} alt="Preview" style={{ objectFit: 'contain', objectPosition: 'center center', width: '120px', height: '120px' }} />}
+                  <textarea type="text" value={content} name='content' onChange={(e) => onChange(e)} placeholder='Quelque chose a publier...' className="pop__textarea" required></textarea>
                   <button type='submit' onClick={() => setClosePop(false)} className="pop__btn">Publier</button>
                </form>
             </div>
@@ -152,20 +174,43 @@ const News = ({ pubs, setPubs, title, setTitle, setContent, content, like, addPu
                      <div className="news__card" key={item.id} >
                         <div className="news__users">
                            <div className="news__users__image">
-                              <img src={pr} alt="" className="news__users__img" />
+                              <img src={item.user ? item.user.avatar : 'defaultAvatar.jpg'} alt="User Avatar" className="news__users__img" />
                            </div>
                            <div className="news__users__text">
-                              <h3 className="news__users__name">Jeancy </h3>
+                              <h3 className="news__users__name">{item.user ? item.user.name : 'Utilisateur non défini'}</h3>
                               <span className="news__users__hours">
-                                  { item.hours }:{item.minutes}
+                                 {item.hours}:{item.minutes}
                               </span>
                            </div>
                         </div>
-                        <div className="news__image">
-                           <img src={item.img} alt={item.title} className="news__img" />
-                        </div>
+                        <AspectRatio style={{ borderRadius: ".7em", marginBottom: "1.1em" }}>
+                           <img
+                              src={item.img}
+                              srcSet={item.img}
+                              sizes="(min-width: 1024px) 100vw, 100vw" // Ajusté pour être plus flexible
+                              loading="lazy"
+                              alt={item.title}
+                              style={{
+                                 position: 'absolute',
+                                 inset: 0,
+                                 boxSizing: 'border-box',
+                                 padding: 0,
+                                 margin: 'auto',
+                                 display: 'block',
+                                 width: '0px',
+                                 height: '0px',
+                                 minWidth: '100%',
+                                 maxWidth: '100%',
+                                 minHeight: '100%',
+                                 maxHeight: '100%',
+                                 border: '1px solid #ccc',
+                                 // objectFit: 'contain',
+                                 borderRadius: '.7em',
+                              }}
+                           />
+                        </AspectRatio>
                         <div className="news__text">
-                           
+
                            <Link to={`/news/${item.id}`} className="news__title">{item.title}</Link>
                            <div className="news__bottom">
                               <div className="news__like">
@@ -183,7 +228,7 @@ const News = ({ pubs, setPubs, title, setTitle, setContent, content, like, addPu
                   )}
                </div>
             </div>
-            <Friends />
+            <Friends users={users} user={user} />
          </div>
       </div>
    )

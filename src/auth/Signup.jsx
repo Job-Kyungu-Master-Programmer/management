@@ -17,10 +17,17 @@ const VisuallyHiddenInput = styled('input')({
  width: 1,
 });
 
-const Signup = ({ addUser, onChange, name, lastName, mail, password, avatar, university, faculty, country, phone}) => {
+const Signup = ({ addUser, onChange, name, lastName, mail, password, avatar, university, faculty, country, phone, isLoad}) => {
  return (
     <div className="signup">
       <div className="container signup__container">
+       {isLoad && <div className="isload-up">
+            <l-quantum
+              size="150"
+              speed="3" 
+              color="rgb(116, 52, 245)" 
+            ></l-quantum>
+            </div>}
         <span className="signup__free">C'est gratuite la plateforme</span>
         <h1 className="signup__title">Creez votre compte Etudiant</h1>
         <div className="signup__quest">

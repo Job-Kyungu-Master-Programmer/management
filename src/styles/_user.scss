@@ -80,6 +80,7 @@
         margin-bottom: .4em!important;
         font-size: .8em;
         text-align: left!important;
+        padding: .2em 4.8em!important;
 
         &:last-child {
             margin-bottom: 0;
@@ -142,4 +143,13 @@
         font-size: calc(0 * 0vw + 2em);
         // background: green!important;
     }
+}
+
+.css-1o7e08b {
+    background: $color!important;
+}
+
+.css-cr3elb {
+    border-color: $color!important;
+    color: $color!important;
 }

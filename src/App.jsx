@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Headers from './components/Headers'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 import Home from './pages/Home'
 import About from './pages/About'
 import News from './pages/News'
@@ -14,13 +14,17 @@ import Signup from './auth/Signup'
 import Footer from './components/Footer'
 import Success from './components/Sucess'
 import Base from './Api/Base' // Assurez-vous que le chemin d'importation est correct
+import logAuth from './Api/logAuth'
 
 const App = () => {
   // Logic for User 
-  //  const [user, setUser] = useState(null);
+   const [user, setUser] = useState();
 
   //State for Response
   const [sucess, setSucess] = useState(null)
+  const navigate = useNavigate()
+  const [logResponse, setLogResponse] = useState(null)
+  const [isLoad, setIsLoad] = useState(null) // Pour faire de loading a la page sign-in
 
   const [users, setUsers] = useState([])
   const [name, setName] = useState('');
@@ -126,6 +130,7 @@ const App = () => {
       const result = await Base.createUser(formUser);
       setUsers(users.concat(result));
       resetForm()
+      navigate('/sign-in')
     } catch (err) {
       alert('Erreur lors de la création de l\'utilisateur');
     }
@@ -134,7 +139,7 @@ const App = () => {
   // Logic for Pub
   // addPub est notre funct* pour ajouter des publicat* a la DB avec les images
   const addPub = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Empêche le comportement par défaut du formulaire
     const dates = new Date();
     const hours = dates.getHours();
     const minutes = dates.getMinutes();
@@ -151,51 +156,97 @@ const App = () => {
     formPub.append('month', month)
     formPub.append('year', year)
    
-    Base.createPub(formPub)
-       .then(response => {
-         setPubs(pubs.concat(response));
-         resetForm()
-       }).finally(suc => {
-            setSucess('Commentaire bien ajouter!')
-          setTimeout(() => {
-            setSucess(null)
-          },2500)
-       })
-       .catch(error => {
-         console.error('Erreur lors de l\'envoi de la publication:', error);
-       });
-   };
-   
+    try {
+        const result = await Base.createPub(formPub);
+        setPubs(pubs.concat(result));
+        resetForm();
+        setSucess('Commentaire bien ajouté!');
+        setTimeout(() => {
+          setSucess(null);
+        }, 2500);
+    } catch (error) {
+        console.error('Erreur lors de l\'envoi de la publication:', error);
+    }
+};
 
-   // Logic Pour finder chaque ID du news
-  //  const match = useMatch('/news/:id')
-  //  const pub = match 
-  //  ? pubs.find(p => p.id === match.params.id) 
-  //  : 'Aucun ID trouvee'
 
-  //  console.log(pub)
 
+   useEffect(() => {
+    const loggedUser = window.localStorage.getItem("userIn");
+    if (loggedUser) {
+      const user = JSON.parse(loggedUser);
+      setUser(user);
+      Base.setToken(user.token);
+    }
+ }, []);
+
+ // Logique pour la connexion
+ const addLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const user = await logAuth.login({ mail, password });
+      window.localStorage.setItem('userIn', JSON.stringify(user));
+      setUser(user);
+      Base.setToken(user.token);
+      setIsLoad(`Bienvenu(e) ${user.name}`);
+      setTimeout(() => {
+        navigate('/news');
+      }, 3000);
+    } catch (exception) {
+      setLogResponse("Identifiants incorrects");
+      setTimeout(() => {
+        setLogResponse(null);
+      }, 4500);
+    }
+ };
+
+ // Déconnecter l'utilisateur avec le bouton
+ const logout = () => {
+    window.localStorage.removeItem('userIn');
+    setUser(null);
+    Base.setToken(null);
+ };
+
+  console.log(user)
+  console.log('localStorage: ', window.localStorage.getItem("userIn"));
 
   return (
     <div className="app">
-      <Headers />
+      <Headers user={user} logout={logout} />
       {/* sucesss pour remettre des reponse */}
       <Success success={sucess} />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />
-        <Route path='/news' element={<News pubs={pubs} setPubs={setPubs} addPub={addPub} title={title}
-          content={content} like={like} setLike={setLike} img={img} setContent={setContent}
-          setTitle={setTitle} setImg={setImg} />} />
-        <Route path='/friends' element={<Friends users={users} />} />
+        <Route
+          path="/news"
+          element={
+              <News pubs={pubs} setPubs={setPubs} addPub={addPub} title={title}
+                    content={content} like={like} setLike={setLike} img={img} setContent={setContent}
+                    setTitle={setTitle} setImg={setImg} user={user} users={users} />
+          }
+        />
+        <Route path='/friends' element={<Friends users={users} user={user} />} />
         <Route path='/contacts' element={<Contact />} />
-        <Route path="/news/:id" element={<New pub={pubs} />} />
+        <Route
+          path="/news/:id"
+          element={
+              <New pub={pubs} user={user} />
+          }
+        />
         <Route path='/myprofile' element={<MyProfile />} />
-        <Route path='/user' element={<User />} />
-        <Route path='/sign-in' element={<Sign />} />
+        <Route 
+        path='/users/:id' 
+        element={
+        <User users={users} user={user}
+         />}
+        />
+        <Route path='/sign-in' element={<Sign addLogin={addLogin}
+        password={password} setPassword={setPassword} mail={mail} setMail={setMail} isLoad={isLoad} 
+        logResp={logResponse}/>} />
         <Route path='/signup' element={<Signup addUser={addUser}
           onChange={onChange} name={name} lastName={lastName} mail={mail} password={password}
-          avatar={avatar} university={university} faculty={faculty} country={country} phone={phone} />} />
+          avatar={avatar} university={university} faculty={faculty} country={country} phone={phone} isLoad={isLoad} />} />
       </Routes>
       <Footer />
     </div>

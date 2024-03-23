@@ -6,12 +6,13 @@ import { BsListCheck } from "react-icons/bs";
 import pr from '../assets/student.jpeg'
 
 
-const Profile = () => {
+const Profile = ({ user }) => {
+
   return (
     <div className="profil">
         <div className="profil__container">
           <div className="profil__image">
-              <img src={pr} alt="" className="profil__img" />
+              <img src={user ? user.avatar : pr} alt="" className="profil__img" />
           </div>
             <Link to='' className='profil__user' > 
             <CgProfile />

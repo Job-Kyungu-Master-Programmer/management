@@ -277,8 +277,6 @@
         align-items: center;
         min-height: auto;
         text-align: left !important;
-
-        display: none;
         
         @media (max-width: 768px) {
             color: #e5e5e5;
@@ -313,7 +311,7 @@
             max-width: 100%;
             margin-left: .8em;
             font-size: .7em;
-            font-weight: 400;
+            font-weight: 900;
 
             @media (max-width: 768px) {
                 color: #e5e5e5;
@@ -323,11 +321,21 @@
         &__logout {
             margin-top: .5em;
             text-align: left;
+            border: 0;
+            outline: 0;
+            background: transparent;
 
             &__icon {
                 font-size: 1.8em !important;
                 color: rgb(192, 192, 192);
                 cursor: pointer;
+                transition: color .3s linear;
+            }
+
+            &:hover {
+                .header__user__logout__icon {
+                    color: $color;
+                }
             }
         }
     }
@@ -367,6 +375,11 @@
     z-index: 90;
     background: rgb(42, 42, 42);
     transition: background .5s ease-in-out;
+
+
+    .header__user__name {
+        color: white;
+    }
 
     @media (max-width: 768px) {
         height: 10em;

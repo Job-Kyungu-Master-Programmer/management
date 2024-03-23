@@ -5,7 +5,7 @@
 .signup {
     padding-top: 9em;
     position: relative;
-    height: 100vh;
+    height: 100%;
     z-index: 5;
     background: url('../assets/12.jpeg') no-repeat center center / cover;
 
@@ -30,6 +30,7 @@
     }
 
     @media (max-width: 768px) {
+        padding: 0 1.8em;
         padding-top: 18em;
         font-size: calc(0 * 0vw + 1.2em);
         background: transparent;

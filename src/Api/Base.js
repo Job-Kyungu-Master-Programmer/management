@@ -5,6 +5,13 @@ const userUrl = '/api/users'
 const pubUrl  = '/api/pubs'
 
 
+// Creation du token sur frontend!
+
+let token = null
+const setToken = newToken => {
+    token = `Bearer ${newToken}`
+}
+
 const getUsers = () => {
     const request = axios.get(userUrl)
     return request.then(response => response.data)
@@ -21,15 +28,24 @@ const updateUser = ( object, id ) => {
 }
 
 
+
+
+
+
+
+
 // Pour les pubs , publier par les utilisateurs
 const getAll = () => {
     const request = axios.get(pubUrl)
     return request.then(response => response.data)   
 }
 
-const createPub = objects => {
-    const request = axios.post(pubUrl, objects)
-    return request.then(response => response.data)
+const createPub = async objects => {
+    const config = {
+        headers: { Authorization: token }
+    }
+    const response = await axios.post(pubUrl, objects, config)
+    return response.data
 }
 
 const updatePub = ( object, id ) => {
@@ -56,5 +72,6 @@ export default {
     createPub,
     updatePub,
     delet,
-    likes
+    likes,
+    setToken
 }

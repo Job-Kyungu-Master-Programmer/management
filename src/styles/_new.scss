@@ -17,6 +17,7 @@
     }
     
     &__container {
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: center ;
@@ -25,12 +26,12 @@
     }
 
     &__image{
+        position: relative;
         margin-bottom: 1.3em;
         border-radius: .5em;
-        overflow: hidden;
         width: 80%;
-        height: 25em;
-        background: white;
+        height: 26em;
+        // background: white;
 
         @media (max-width: 768px) {
             width: 100%;
