@@ -2,18 +2,46 @@ const pubRouter = require('express').Router()
 const Pub =  require('../models/Pub')
 const uploadFile = require('../utils/multerConfig')
 const cloudinary = require('../utils/cloud')
+const jwt = require('jsonwebtoken')
+const User = require('../models/User')
 
 
+
+//Passer le token a la personne connecter et pour creer une pub
+const getToken = request => {
+    const authorization = request.get('authorization')
+    if(authorization && authorization.startsWith('Bearer ')) {
+        return authorization.replace('Bearer ','')
+    }
+    return null
+}
 
 pubRouter.get('/', async (request, response) => {
-    const pub = await Pub.find({})
-    response.json(pub)
-})
+    const pubs = await Pub.find({}).populate('user', {name:1, avatar:1});
+    response.json(pubs);
+});
+
 
 pubRouter.get('/:id', async (request, response) => {
-    const pub = await Pub.findById(request.params.id)
-    response.json(pub)
-})
+    try {
+        // Ici nous trouvons la publication par son ID et populons les détails de l'utilisateur
+        const pub = await Pub.findById(request.params.id).populate('user', {name:1, avatar:1});
+        // Nous nous assurons que l'user est valide
+        if (!pub.user) {// Et cet user , c juste l'user dans populate
+            return response.status(404).json({ error: 'Publication or user not found' });
+        }
+        // Et nous renvoyons la publication et ainsi que les details de l'user qui l'a creer
+        response.json({
+            publication: pub,
+            user: pub.user
+        });
+    } catch (err) {
+        console.error(err); // Log the error for debugging
+        return response.status(500).json({ error: 'An error occurred while fetching the publication' });
+    }
+});
+
+
 
 
 // Dans cette route si on supprime la pub , celle-ci va directement supprimer l'img dans Cloudinary
@@ -31,29 +59,44 @@ pubRouter.delete('/:id', async (request, response) => {
 
 
 pubRouter.post('/', uploadFile.single('img'), async (request, response) => {
-    const body = request.body
-    let fileImg = null 
-
-    if(request.file) {
-        try {
-            const result = await cloudinary.uploader.upload(request.file.path);
-            fileImg = result.secure_url // URL de l'image Cloudinary
-        } catch (error) {
-            console.error('Erreur lors de l\'upload sur Cloudinary :', error)
-            return response.status(500).json({ error: 'Erreur lors de l\'upload sur Cloudinary' });
+    try {
+        const body = request.body
+        let fileImg = null 
+    
+        //Decodeer l'entete si l'user contient le token 
+        const decodedToken = jwt.verify(getToken(request), process.env.SECRET_JWT)
+        if(!decodedToken.id) {
+            return response.status(401).json({error: 'Invalid token'})
         }
+    
+        const user = await User.findById(decodedToken.id)
+    
+        if(request.file) {
+            try {
+                const result = await cloudinary.uploader.upload(request.file.path);
+                fileImg = result.secure_url // URL de l'image Cloudinary
+            } catch (error) {
+                console.error('Erreur lors de l\'upload sur Cloudinary :', error)
+                return response.status(500).json({ error: 'Erreur lors de l\'upload sur Cloudinary' });
+            }
+        }
+    
+        const pub = new Pub({
+            title: body.title,
+            content: body.content,
+            img: fileImg,
+            hours: body.hours,
+            minutes: body.minutes,
+            user: user.id
+        })
+    
+        const savedPub = await pub.save()
+        user.pubs = user.pubs.concat(savedPub._id)
+        await user.save()
+        response.status(201).json(savedPub)
+    } catch (err) {
+        return response.status(401).json({error: 'Invalid Token'})
     }
-
-    const pub = new Pub({
-        title: body.title,
-        content: body.content,
-        img: fileImg,
-        hours: body.hours,
-        minutes: body.minutes
-    })
-
-    const savedPub = await pub.save()
-    response.json(savedPub)
 })
 
 // cloudinary.api.resources(function(error, result) {

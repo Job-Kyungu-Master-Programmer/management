@@ -4,10 +4,26 @@ const User = require('../models/User')
 const uploadFile = require('../utils/multerConfig')
 const cloudinary = require('../utils/cloud') 
 
-
 userRouter.get('/', async (request, response) => {
-    const user = await User.find({})
+    const user = await User.find({}).populate('pubs', {title:1})
     response.json(user)
+})
+
+
+userRouter.get('/:id', async (request, response) => { // Dans cette route nous afficherons chaque user avec ces notes creer
+    try {
+        // const body = request.body 
+        const user = await User.findById(request.params.id).populate('pubs')
+
+        if (!user || !user.pubs) {
+            return response.status(404).json({ error: 'Publication or user not found' });
+        }
+        
+        //Renvoyer les infos de l'user ainsi ques le titre et l'img des toutes ses notes creer
+        response.json({user: user, pubs: user.pubs})
+    } catch (error) {
+        return response.status(404).json({error: 'Note not found !'})
+    }
 })
 
 
