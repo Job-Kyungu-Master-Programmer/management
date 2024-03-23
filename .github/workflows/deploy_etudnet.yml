@@ -1,0 +1,39 @@
+# Ce fichier définit les actions à exécuter lorsqu'un push ou une pull request est effectué sur la branche 'main'.
+
+name: Build et déploiement
+
+# Déclencheurs
+on:
+ push:
+    branches:
+      - main
+ pull_request:
+    branches:
+      - main
+
+jobs:
+ build:
+    # Spécifie le système d'exploitation sur lequel le job sera exécuté.
+    runs-on: ubuntu-latest
+    steps:
+      # Étape pour récupérer le code source depuis le dépôt GitHub.
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Étape pour configurer Node.js sur l'environnement d'exécution.
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.11.1'
+
+      # Étape pour installer les dépendances du projet.
+      - name: Install dependencies
+        run: npm ci
+
+      # Étape pour construire le projet.
+      - name: Build
+        run: npm run build
+        # Définit des variables d'environnement nécessaires pour la construction.
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          SECRET_KEY: https://api.render.com/deploy/srv-${{ secrets.SECRET_KEY_HOOK }}
